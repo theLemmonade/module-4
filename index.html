@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+    <title>Pop Quiz</title>
+    <link rel="reset" href="reset.css"/>
+    <link rel="stylesheet" href="style.css"/>
+  </head>
+  <body>
+     <header class="header">
+         <button id="header">Show Highscores</button>
+         <div id="timer">Time: <span id="time">00</span></div>
+     </header>
+     <div class="opening">
+         <h1>Coding Quiz Challenge</h1>
+         <p>Try to answer the following code-related questions within the time limit. Keep in mind that incorrect answers will penalize your score/time by ten seconds!</p>
+         <button id="start">Start Quiz</button>
+     </div>
+     <div class="quiz">
+         <h1 id="question">Example question</h1>
+         <button id="a">AAAAAAAAAAAAAAAAAA</button>
+         <button id="b">BBBBBBBgiBBBBBBBBBBB</button>
+         <button id="c">CCCCCCCCCCCCCCCCCC</button>
+         <button id="d">DDDDDDDDDDDDDDDDDD</button>
+         <span id="feedback">wrong</span>
+     </div>
+     <div class="submit">
+         <h1>All done!</h1>
+         <h2>Your final score is: <span id="result"></span></h2>
+         <input placeholder="Enter your initials" id="initial"></input>
+         <button id="submit">Submit</button>
+     </div>
+     <div class="scoreboard">
+         <h1>High Scores</h1>
+         <span id="score"></span>
+         <button>Go back</button>
+         <button>Clear High Scores</button>
+     </div>
+     <script src="script.js"></script>
+  </body>
+</html>
