@@ -7,11 +7,12 @@
     <title>Pop Quiz</title>
     <link rel="reset" href="reset.css"/>
     <link rel="stylesheet" href="style.css"/>
+    <script src="script.js"></script>
   </head>
   <body>
      <header class="header">
-         <button id="header">Show Highscores</button>
-         <div id="timer">Time: <span id="time">00</span></div>
+         <button id="show">Show Highscores</button>
+         <div id="countdown">Time: <span id="timer"><!-- 00 --></span></div>
      </header>
      <div class="opening">
          <h1>Coding Quiz Challenge</h1>
@@ -19,12 +20,12 @@
          <button id="start">Start Quiz</button>
      </div>
      <div class="quiz">
-         <h1 id="question">Example question</h1>
-         <button id="a">AAAAAAAAAAAAAAAAAA</button>
-         <button id="b">BBBBBBBgiBBBBBBBBBBB</button>
-         <button id="c">CCCCCCCCCCCCCCCCCC</button>
-         <button id="d">DDDDDDDDDDDDDDDDDD</button>
-         <span id="feedback">wrong</span>
+         <h1 id="question"><!-- Question -->Q?</h1>
+         <button class="answer"><!-- Answer A -->A</button>
+         <button class="answer"><!-- Answer B -->B</button>
+         <button class="answer"><!-- Answer C -->C</button>
+         <button class="answer"><!-- Answer D -->D</button>
+         <span id="feedback"><!-- Correct! --></span>
      </div>
      <div class="submit">
          <h1>All done!</h1>
@@ -38,6 +39,5 @@
          <button>Go back</button>
          <button>Clear High Scores</button>
      </div>
-     <script src="script.js"></script>
   </body>
 </html>

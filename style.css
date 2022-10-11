@@ -4,7 +4,7 @@ body {
     background-color: #222;
 }
 
-#timer {
+#countdown {
     display: inline-block;
     justify: right;
     color: white;
@@ -38,8 +38,9 @@ button:hover {
     -webkit-animation: blink 0.8s infinite;
 }
 
-.header, .submit, .scoreboard {
+.header, .opening, .quiz, .submit, .scoreboard {
     margin: 0 10%;
+    display: visible;
 }
 
 .opening {
@@ -49,11 +50,8 @@ button:hover {
 }
 
 .quiz {
-    display: grid;
     max-width: 80%;
-    justify: center;
-    margin: 0 10%;
-
+    display: grid;
 }
 
 #feedback {
