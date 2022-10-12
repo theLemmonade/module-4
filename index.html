@@ -1,43 +1,40 @@
 <!DOCTYPE html>
 <html lang="en">
   <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
     <title>Pop Quiz</title>
     <link rel="reset" href="reset.css"/>
     <link rel="stylesheet" href="style.css"/>
-    <script src="script.js"></script>
   </head>
   <body>
-     <header class="header">
+     <header id="header">
          <button id="show">Show Highscores</button>
          <div id="countdown">Time: <span id="timer"><!-- 00 --></span></div>
      </header>
-     <div class="opening">
+     <div id="opening">
          <h1>Coding Quiz Challenge</h1>
          <p>Try to answer the following code-related questions within the time limit. Keep in mind that incorrect answers will penalize your score/time by ten seconds!</p>
          <button id="start">Start Quiz</button>
      </div>
-     <div class="quiz">
-         <h1 id="question"><!-- Question -->Q?</h1>
-         <button class="answer"><!-- Answer A -->A</button>
-         <button class="answer"><!-- Answer B -->B</button>
-         <button class="answer"><!-- Answer C -->C</button>
-         <button class="answer"><!-- Answer D -->D</button>
+     <div id="quiz">
+         <h1 id="question"><!-- Question -->Question?</h1>
+         <button class="answer"><!-- Answer A --></button>
+         <button class="answer"><!-- Answer B --></button>
+         <button class="answer"><!-- Answer C --></button>
+         <button class="answer"><!-- Answer D --></button>
          <span id="feedback"><!-- Correct! --></span>
      </div>
-     <div class="submit">
+     <div id="submit">
          <h1>All done!</h1>
-         <h2>Your final score is: <span id="result"></span></h2>
+         <h2>Your final score is: <span id="result"><!-- 37 --></span></h2>
          <input placeholder="Enter your initials" id="initial"></input>
          <button id="submit">Submit</button>
      </div>
-     <div class="scoreboard">
+     <div id="scoreboard">
          <h1>High Scores</h1>
          <span id="score"></span>
          <button>Go back</button>
          <button>Clear High Scores</button>
      </div>
+     <script src="script.js"></script>
   </body>
 </html>

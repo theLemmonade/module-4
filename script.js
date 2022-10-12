@@ -1,20 +1,42 @@
-var timer = document.getElementById('timer')[0];
-var opening = document.getElementsByClassName('opening')[0];
-var quiz = document.getElementsByClassName('quiz')[0];
-var questionEl = document.getElementById('question')[0];
-var submit = document.getElementsByClassName('submit')[0];
-var scoreboard = document.getElementsByClassName('scoreboard')[0];
-var hidden = "";
+var timer = document.getElementById('timer');
+var opening = document.getElementById('opening');
+var start = document.getElementById('start');
+var quiz = document.getElementById('quiz');
+var questionEl = document.getElementById('question');
+var buttons = document.getElementsByClassName('answer')
+var submit = document.getElementById('submit');
+var scoreboard = document.getElementById('scoreboard');
 var current = 0;
 var secondsleft = 80;
 
-questionPool = {
-    'Question 1':['Answer A','Answer B','Asnwer C','Asnwer D',0],
-    'Question 2':['Answer A','Answer B','Asnwer C','Asnwer D',0],
-    'Question 3':['Answer A','Answer B','Asnwer C','Asnwer D',0],
-    'Question 4':['Answer A','Answer B','Asnwer C','Asnwer D',0],
-    'Question 5':['Answer A','Answer B','Asnwer C','Asnwer D',0]
-};
+// Question pool
+var questionPool = [
+  {question: "question content goes here",
+  answers: ["answer1", "answer2", "answer3", "answer 4"],
+  correct: "answer3",
+  },
+  {question: "question content goes here",
+  answers: ["answer1", "answer2", "answer3", "answer 4"],
+  correct: "answer1",
+  },
+  {question: "question content goes here",
+  answers: ["answer1", "answer2", "answer3", "answer 4"],
+  correct: "Answer4"
+  },
+  {question: "question content goes here",
+  answers: ["answer1", "answer2", "answer3", "answer 4"],
+  correct: "Answer3"
+  },
+  {question: "question content goes here",
+  answers: ["answer1", "answer2", "answer3", "answer 4"],
+  correct: "answer1",
+  },
+]
+
+// Stage HTML display attribute
+quiz.setAttribute("style", "display:none");
+submit.setAttribute("style", "display:none");
+scoreboard.setAttribute("style", "display:none");
 
 // Timer
 function runTimer() {
@@ -26,53 +48,52 @@ function runTimer() {
         }
     }, 1000);
 };
-
+ 
 // Quiz
 function beginQuiz(){
-    function hideElement();{
-        const stream = document.getElementsByClassName('opening','submit','scoreboard')[0];
-        stream.style.visibility = 'hidden';
-    };
+  opening.setAttribute("style", "display:none");
+  quiz.setAttribute("style", "display:grid");
+  runTimer();
+  console.log("Begin quiz with " + secondsleft + " seconds.")  
     function loadQuestion(){
-        var question = Object.keys(questionPool)[curr];
-        questionEl.innerHTML ='';
-        questionEl.innerHTML = question;
-    };
-    function loadAnswer();{
-        var answer = questionPool[Object.keys(questionPool)[curr]];
-        answerEl.innerHTML='';
-        for (var i = 0; i < answer.length -1; i += 1) {
-            var addAnswer = document.createElement('div'),
-            option = document.createTextNode(answer[i]);
-            addAnswer.appendChild(option);
-            addAnswer.addEventListener("click", checkAnswer(i, answer));
-            answerEl.appendChild(addAnswer);
+        var currentQuestion = questionPool[current].question;
+        questionEl.innerHTML = '';
+        questionEl.innerHTML = currentQuestion;
+      };
+    function loadAnswer(){
+        var currentAnswers = questionPool[current].answers
+        for (var i = 0; i < currentAnswers.length -1; i += 1) {
+          buttons[i].textContent = currentAnswers[i];
+          buttons[i].addEventListener("click", checkAnswer(i));
         };
-    };
-    function checkAnswer(i, arr) {
-        return function () {
-          var choice = i,
-              correct = arr[arr.length-1];
+      };
+      loadQuestion();
+      loadAnswer();
+    function checkAnswer(i){
+          var choice = questionPool[current].answers[i],
+              correct = questionPool[current].correct;
           if (choice === correct) {
             timePenalty(true);             
           } else {
             timePenalty(false);                        
           };  
-          if (current < Object.keys(questionPool).length -1) {
+          if (current < questionPool.length - 1) {
+            console.log("Cycling question");
             current += 1;
             loadQuestion(current);
             loadAnswer(current);
           } else {
-            questionEl.innerHTML = 'Done';
-            answerEl.innerHTML = '';
+            quiz.setAttribute("style", "display:none");
+            submit.setAttribute("style", "display:block")
+            console.log("Game over");
           };                  
         };
-      };
       function timePenalty(bool) {
         if (!bool) {
-            timer--
-        }
-      }
-      loadQuestion(current);
-      loadAnswer(current);
+            timer -= 10
+        };
+      };
     };
+
+  
+start.addEventListener("click", beginQuiz);
