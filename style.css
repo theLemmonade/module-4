@@ -19,7 +19,7 @@ body {
 }
 
 header {
-    margin-bottom: 20%;
+    margin-bottom: 100px;
 }
 
 @-webkit-keyframes blink {
@@ -34,7 +34,7 @@ button {
     font-family: monospace;
     padding: 5px 15px 5px 15px;
     max-width: fit-content;
-    margin-top: 5px;
+    margin-top: 10px;
     background-color: black;
     border-radius: 5px;
     cursor: pointer;

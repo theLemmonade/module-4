@@ -3,32 +3,36 @@ var opening = document.getElementById('opening');
 var start = document.getElementById('start');
 var quiz = document.getElementById('quiz');
 var questionEl = document.getElementById('question');
-var buttons = document.getElementsByClassName('answer')
+var buttons = document.getElementsByClassName('answer');
+var initial = document.getElementById('initial').input
 var submit = document.getElementById('submit');
+var back = document.getElementById('back');
+var clear = document.getElementById('clear');
 var scoreboard = document.getElementById('scoreboard');
 var current = 0;
+var score = 0;
 var secondsleft = 80;
 
 // Question pool
 var questionPool = [
-  {question: "question content goes here",
-  answers: ["answer1", "answer2", "answer3", "answer 4"],
-  correct: "answer3",
+  {question: "What does .css stand for?",
+  answers: ["Concetrating Solar Solenoid", "Cascading Style Sheet", "Cat Super Star", "Cell Shaded Stats"],
+  correct: "Cascading Style Sheet",
   },
   {question: "question content goes here",
-  answers: ["answer1", "answer2", "answer3", "answer 4"],
+  answers: ["answer1", "answer2", "answer3", "answer4"],
   correct: "answer1",
   },
   {question: "question content goes here",
-  answers: ["answer1", "answer2", "answer3", "answer 4"],
+  answers: ["answer1", "answer2", "answer3", "answer4"],
   correct: "Answer4"
   },
   {question: "question content goes here",
-  answers: ["answer1", "answer2", "answer3", "answer 4"],
+  answers: ["answer1", "answer2", "answer3", "answer4"],
   correct: "Answer3"
   },
   {question: "question content goes here",
-  answers: ["answer1", "answer2", "answer3", "answer 4"],
+  answers: ["answer1", "answer2", "answer3", "answer4"],
   correct: "answer1",
   },
 ]
@@ -43,8 +47,9 @@ function runTimer() {
     var timerInterval = setInterval (function() {
         secondsleft--;
         timer.textContent = secondsleft;
-        if(secondsleft ===0) {
+        if(secondsleft === 0) {
             clearInterval(timerInterval);
+            // return beginQuiz;
         }
     }, 1000);
 };
@@ -54,6 +59,7 @@ function beginQuiz(){
   opening.setAttribute("style", "display:none");
   quiz.setAttribute("style", "display:grid");
   runTimer();
+  // if (secondsleft > 0) {
   console.log("Begin quiz with " + secondsleft + " seconds.")  
     function loadQuestion(){
         var currentQuestion = questionPool[current].question;
@@ -62,7 +68,7 @@ function beginQuiz(){
       };
     function loadAnswer(){
         var currentAnswers = questionPool[current].answers
-        for (var i = 0; i < currentAnswers.length -1; i += 1) {
+        for (var i = 0; i <= currentAnswers.length -1; i += 1) {
           buttons[i].textContent = currentAnswers[i];
           buttons[i].addEventListener("click", checkAnswer(i));
         };
@@ -95,5 +101,19 @@ function beginQuiz(){
       };
     };
 
-  
+//Add score to local storage
+function submitScore(){
+  submit.setAttribute("style", "display:none");
+  scoreboard.setAttribute("style", "display:block");
+}
+
+//Reset Quiz
+function reset(){
+  scoreboard.setAttribute("style", "display:none");
+  opening.setAttribute("style", "display:block");
+}
+
+//Navigate pages
 start.addEventListener("click", beginQuiz);
+submit.addEventListener("click", submitScore);
+back.addEventListener("click", reset);
