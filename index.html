@@ -8,24 +8,21 @@
   <body>
      <header id="header">
          <button id="show">Show Highscores</button>
-         <div id="countdown">Time: <span id="timer"><!-- 00 --></span></div>
+         <div id="countdown">Time: <span id="timer">80</span></div>
      </header>
-     <div id="opening"><!-- Elements are hidden or shown via display:x using .js -->
+     <div id="opening">
          <h1>Coding Quiz Challenge</h1>
          <p>Try to answer the following code-related questions within the time limit. Keep in mind that incorrect answers will penalize your score/time by ten seconds!</p>
          <button id="start">Start Quiz</button>
      </div>
      <div id="quiz">
-         <h1 id="question"><!-- Question -->Question?</h1>
-         <button class="answer"><!-- Answer A -->Example</button>
-         <button class="answer"><!-- Answer B --></button>
-         <button class="answer"><!-- Answer C --></button>
-         <button class="answer"><!-- Answer D --></button>
-         <span id="feedback"><!-- Correct! --></span>
+         <h1 id="question"></h1>
+         <div id="answers"></div>
+         <div id="feedback"></div>
      </div>
      <div id="submit">
          <h1>All done!</h1>
-         <h2>Your final score is: <span id="result"><!-- Score --></span></h2>
+         <h2>Your final score is: <span id="score"><!-- Score --></span></h2>
          <input placeholder="Enter your initials" id="initial"></input>
          <button id="submit">Submit</button>
      </div>

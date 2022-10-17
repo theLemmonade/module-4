@@ -2,8 +2,8 @@ var timer = document.getElementById('timer');
 var opening = document.getElementById('opening');
 var start = document.getElementById('start');
 var quiz = document.getElementById('quiz');
-var questionEl = document.getElementById('question');
-var buttons = document.getElementsByClassName('answer');
+var question = document.getElementById('question');
+var buttons = document.getElementById('answers')
 var initial = document.getElementById('initial').input
 var submit = document.getElementById('submit');
 var back = document.getElementById('back');
@@ -11,9 +11,8 @@ var clear = document.getElementById('clear');
 var scoreboard = document.getElementById('scoreboard');
 var current = 0;
 var score = 0;
-var secondsleft = 80;
-
-// Question pool
+var seconds = 80;
+//question pool
 var questionPool = [
   {question: "What does .css stand for?",
   answers: ["Concetrating Solar Solenoid", "Cascading Style Sheet", "Cat Super Star", "Cell Shaded Stats"],
@@ -36,84 +35,109 @@ var questionPool = [
   correct: "answer1",
   },
 ]
-
-// Stage HTML display attribute
+//stage .css display attributes
 quiz.setAttribute("style", "display:none");
 submit.setAttribute("style", "display:none");
 scoreboard.setAttribute("style", "display:none");
-
-// Timer
+//timer
 function runTimer() {
     var timerInterval = setInterval (function() {
-        secondsleft--;
-        timer.textContent = secondsleft;
-        if(secondsleft === 0) {
+        seconds--;
+        timer.textContent = seconds;
+        if(seconds === 0) {
             clearInterval(timerInterval);
-            // return beginQuiz;
         }
     }, 1000);
 };
- 
-// Quiz
-function beginQuiz(){
+//launch quiz
+function runQuiz() {
+  console.log("Begin quiz with " + seconds + " seconds left.")  
   opening.setAttribute("style", "display:none");
-  quiz.setAttribute("style", "display:grid");
+  quiz.setAttribute("style", "display:block");
   runTimer();
+  if (seconds === 0) {
+    console.log('Time out!');
+    score = "0";
+    clearInterval(timerInterval);
+    quiz.setAttribute("style", "display:none");
+    submit.setAttribute("style", "display:block");
+  } else if (current === 5){
+    console.log('You won! Your score is ' + seconds);
+    secondsleft = score;
+    clearInterval(timerInterval);
+    quiz.setAttribute("style", "display:none");
+    submit.setAttribute("style", "display:block");
+  } else {
+    for (var i = 0; i < questionPool.length; i++) {
+      var current = questionPool[i];
+
+
+
+
+
+
+      
+
+
+    }
+  }
+
+
+
+
+  document.getElementById("start").addEventListener("click", runQuiz);
+
   // if (secondsleft > 0) {
-  console.log("Begin quiz with " + secondsleft + " seconds.")  
-    function loadQuestion(){
-        var currentQuestion = questionPool[current].question;
-        questionEl.innerHTML = '';
-        questionEl.innerHTML = currentQuestion;
-      };
-    function loadAnswer(){
-        var currentAnswers = questionPool[current].answers
-        for (var i = 0; i <= currentAnswers.length -1; i += 1) {
-          buttons[i].textContent = currentAnswers[i];
-          buttons[i].addEventListener("click", checkAnswer(i));
-        };
-      };
-      loadQuestion();
-      loadAnswer();
-    function checkAnswer(i){
-          var choice = questionPool[current].answers[i],
-              correct = questionPool[current].correct;
-          if (choice === correct) {
-            timePenalty(true);             
-          } else {
-            timePenalty(false);                        
-          };  
-          if (current < questionPool.length - 1) {
-            console.log("Cycling question");
-            current += 1;
-            loadQuestion(current);
-            loadAnswer(current);
-          } else {
-            quiz.setAttribute("style", "display:none");
-            submit.setAttribute("style", "display:block")
-            console.log("Game over");
-          };                  
-        };
-      function timePenalty(bool) {
-        if (!bool) {
-            timer -= 10
-        };
-      };
-    };
+//   console.log("Begin quiz with " + secondsleft + " seconds.")  
+//     function loadQuestion(){
+//         var currentQuestion = questionPool[current].question;
+//         questionEl.innerHTML = '';
+//         questionEl.innerHTML = currentQuestion;
+//         var currentAnswers = questionPool[current].answers;
+//         for (var i = 0; i <= currentAnswers.length -1; i += 1) {
+//           buttons[i].textContent = currentAnswers[i];
+//           buttons[i].addEventListener("click", checkAnswer);
+//         };
+//       };
+//       loadQuestion();
+//     function checkAnswer(){
+//           var choice = questionPool[current].answers[i],
+//               correct = questionPool[current].correct;
+//           if (choice === correct) {
+//             timePenalty(true);             
+//           } else {
+//             timePenalty(false);                        
+//           };  
+//           if (current < questionPool.length - 1) {
+//             console.log("Cycling question");
+//             current += 1;
+//             loadQuestion(current);
+//           } else {
+//             quiz.setAttribute("style", "display:none");
+//             submit.setAttribute("style", "display:block")
+//             console.log("Game over");
+//           };                  
+//         };
+//       function timePenalty(bool) {
+//         if (!bool) {
+//             timer -= 10
+//         };
+//       };
+//     };
 
-//Add score to local storage
-function submitScore(){
-  submit.setAttribute("style", "display:none");
-  scoreboard.setAttribute("style", "display:block");
-}
+// //Add score to local storage
+// function submitScore(){
+//   submit.setAttribute("style", "display:none");
+//   scoreboard.setAttribute("style", "display:block");
+// }
 
-//Reset Quiz
-function reset(){
-  scoreboard.setAttribute("style", "display:none");
-  opening.setAttribute("style", "display:block");
-}
+// //Reset Quiz
+// function reset(){
+//   scoreboard.setAttribute("style", "display:none");
+//   opening.setAttribute("style", "display:block");
+// }
 
-//Navigate pages
-start.addEventListener("click", beginQuiz);
-submit.addEventListener("click", submitScore);
-back.addEventListener("click", reset);
+// //Navigate pages
+// start.addEventListener("click", beginQuiz);
+// submit.addEventListener("click", submitScore());
+// back.addEventListener("click", reset());
