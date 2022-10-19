@@ -9,17 +9,20 @@ var button1 = document.getElementById('1');
 var button2 = document.getElementById('2');
 var button3 = document.getElementById('3');
 var submission = document.getElementById('submission');
-var initial = document.getElementById('initial').input;
+var initial = document.getElementById('initial');
 var submit = document.getElementById('submit');
 var scoreboard = document.getElementById('scoreboard');
+var history = JSON.parse(localStorage.getItem("history")) || [];
+var board = document.getElementById('board');
 var back = document.getElementById('back');
 var clear = document.getElementById('clear');
+var username = ""
 var score = 0;
 var current = 0;
 var seconds = 80;
 
 //question pool with correct answer value, expandible
-var questionPool = [
+var pool = [
   {question: "What does .css stand for?",
   answers: ["Concetrating Solar Solenoid", "Cascading Style Sheet", "Cat Super Star", "Cell Shaded Stats"],
   correct: 1,
@@ -70,7 +73,7 @@ function runQuiz() {
     quiz.setAttribute("style", "display:block");
     runTimer();
     drawQuiz();
-  } else if (current === questionPool.length) {
+  } else if (current === pool.length) {
     console.log("You won! Your score is " + seconds + ".");
     score = seconds;
     quiz.setAttribute("style", "display:none");
@@ -82,9 +85,9 @@ function runQuiz() {
 
 //draws the current question and answers from question pool
 function drawQuiz() {
-  console.log("Cycling question, current place is " + current + " out of " + questionPool.length + ".")
-  var currentQ = questionPool[current].question;
-  var currentA = questionPool[current].answers;
+  console.log("Cycling question, current place is " + current + " out of " + pool.length + ".")
+  var currentQ = pool[current].question;
+  var currentA = pool[current].answers;
   title.textContent = currentQ;
   button0.textContent = currentA[0];
   button1.textContent = currentA[1];
@@ -96,48 +99,58 @@ function drawQuiz() {
 function gradeQuiz() {
   var choice = this.getAttribute("id");
   console.log("User selected " + choice +", checking answer.");
-  correct = questionPool[current].correct;
+  correct = pool[current].correct;
   if (choice == correct) {
     console.log("Answer correct, cycling question");
     current++;
   } else {
-    console.log("Answer incorrect, deducting time, cycling question.");
+    console.log("Answer incorrect, deducting 10 seconds, cycling question.");
     seconds -= 10;
     current++;
   };
   runQuiz();
 };
 
-//Submit initals and score to local storage
-function submitScore(){
-  console.log("Submitting initials and score to scoreboard.")
-  submission.setAttribute("style", "display:none");
-  scoreboard.setAttribute("style", "display:block");
+//submit initals and score to local storage
+function submitScore() {
+  if (initial.value === "") {
+    initial.setAttribute("placeholder", "Enter your initials");
+  } else {
+    username = initial.value.trim();
+    var currentScore = {
+      username : username,
+      score : score
+    };
+    history.push(currentScore);
+    localStorage.setItem("history", JSON.stringify(history));
+    console.log("Submitting initials " + username + " and score " + score + " to the scoreboard.");
+    submission.setAttribute("style", "display:none");
+    scoreboard.setAttribute("style", "display:block");
+  };
 };
 
-//Draw scoreboard from local storage
+//draw scoreboard from local storage
 function drawScore() {
+  board.appendChild(history);
 };
 
-//Clear local storage and scoreboard
-function clearScore() {
-};
-
-//Reset quiz
+//reset quiz
 function reset() {
+  initial.setAttribute("placeholder", "");
   scoreboard.setAttribute("style", "display:none");
   opening.setAttribute("style", "display:block");
+  username = "";
   score = 0;
   current = 0;
   seconds = 80;
 };
 
-//Navigate quiz
+//navigate quiz
 start.addEventListener("click", runQuiz);
 button0.addEventListener("click", gradeQuiz);
 button1.addEventListener("click", gradeQuiz);
 button2.addEventListener("click", gradeQuiz);
 button3.addEventListener("click", gradeQuiz);
-submit.addEventListener("click", submitScore);
+submit.addEventListener("click", submitScore, drawScore);
+clear.addEventListener("click", localStorage.clear());
 back.addEventListener("click", reset);
-clear.addEventListener("click", clearScore);

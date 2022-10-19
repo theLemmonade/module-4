@@ -1,7 +1,7 @@
 body {
     font-family: monospace, sans-serif;
     color: limegreen;
-    background-color: #222;
+    background-color: rgb(20, 20, 20);
     margin: 0 10%;
 }
 
@@ -20,12 +20,6 @@ body {
 
 header {
     margin-bottom: 100px;
-}
-
-@-webkit-keyframes blink {
-    0% {background: black}
-    50% {background: lime}
-    100% {background: black}
 }
 
 button {
@@ -74,4 +68,10 @@ button:hover {
     margin-top: 5px;
     background-color: black;
     border-radius: 5px;
+}
+
+@-webkit-keyframes blink {
+    0% {background: black}
+    50% {background: lime}
+    100% {background: black}
 }
