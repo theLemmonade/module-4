@@ -8,8 +8,10 @@ var button0 = document.getElementById('0');
 var button1 = document.getElementById('1');
 var button2 = document.getElementById('2');
 var button3 = document.getElementById('3');
+var submission = document.getElementById('submission');
 var initial = document.getElementById('initial').input;
 var submit = document.getElementById('submit');
+var scoreboard = document.getElementById('scoreboard');
 var back = document.getElementById('back');
 var clear = document.getElementById('clear');
 var score = 0;
@@ -42,7 +44,7 @@ var questionPool = [
 
 //stage .css display attributes
 quiz.setAttribute("style", "display:none");
-submit.setAttribute("style", "display:none");
+submission.setAttribute("style", "display:none");
 scoreboard.setAttribute("style", "display:none");
 
 //timer, with gameover functionality
@@ -55,7 +57,7 @@ function runTimer() {
           score = 0;
           clearInterval(timerInterval);
           quiz.setAttribute("style", "display:none");
-          submit.setAttribute("style", "display:block");
+          submission.setAttribute("style", "display:block");
         };
     }, 1000);
 };
@@ -69,10 +71,10 @@ function runQuiz() {
     runTimer();
     drawQuiz();
   } else if (current === questionPool.length) {
-    console.log("You won! Your score is " + seconds);
+    console.log("You won! Your score is " + seconds + ".");
     score = seconds;
     quiz.setAttribute("style", "display:none");
-    submit.setAttribute("style", "display:block");
+    submission.setAttribute("style", "display:block");
   } else {
     drawQuiz();
   };
@@ -91,7 +93,7 @@ function drawQuiz() {
 };
 
 //decriment time for incorrect answer choice
-function checkAnswer() {
+function gradeQuiz() {
   var choice = this.getAttribute("id");
   console.log("User selected " + choice +", checking answer.");
   correct = questionPool[current].correct;
@@ -106,23 +108,20 @@ function checkAnswer() {
   runQuiz();
 };
 
-
-
-//Submit inital and score to local storage
+//Submit initals and score to local storage
 function submitScore(){
   console.log("Submitting initials and score to scoreboard.")
-  submit.setAttribute("style", "display:none");
+  submission.setAttribute("style", "display:none");
   scoreboard.setAttribute("style", "display:block");
-  //WIP
 };
 
-//function drawScore() {
-////WIP
-//};
+//Draw scoreboard from local storage
+function drawScore() {
+};
 
-//function clearScore() {
-////WIP
-//};
+//Clear local storage and scoreboard
+function clearScore() {
+};
 
 //Reset quiz
 function reset() {
@@ -133,11 +132,12 @@ function reset() {
   seconds = 80;
 };
 
+//Navigate quiz
 start.addEventListener("click", runQuiz);
-button0.addEventListener("click", checkAnswer);
-button1.addEventListener("click", checkAnswer);
-button2.addEventListener("click", checkAnswer);
-button3.addEventListener("click", checkAnswer);
+button0.addEventListener("click", gradeQuiz);
+button1.addEventListener("click", gradeQuiz);
+button2.addEventListener("click", gradeQuiz);
+button3.addEventListener("click", gradeQuiz);
 submit.addEventListener("click", submitScore);
 back.addEventListener("click", reset);
-clear.addEventListener("click", ) //clearScore)
+clear.addEventListener("click", clearScore);
