@@ -12,14 +12,14 @@ var submission = document.getElementById('submission');
 var initial = document.getElementById('initial');
 var submit = document.getElementById('submit');
 var scoreboard = document.getElementById('scoreboard');
-var history = JSON.parse(localStorage.getItem("history")) || [];
 var board = document.getElementById('board');
 var back = document.getElementById('back');
 var clear = document.getElementById('clear');
-var username = ""
-var score = 0;
-var current = 0;
-var seconds = 80;
+var username = String;
+var score = Number;
+var current = Number;
+var seconds = Number;
+var win = Boolean;
 
 //question pool with correct answer value, expandible
 var pool = [
@@ -27,45 +27,40 @@ var pool = [
   answers: ["Concetrating Solar Solenoid", "Cascading Style Sheet", "Cat Super Star", "Cell Shaded Stats"],
   correct: 1,
   },
-  {question: "question content goes here",
-  answers: ["answer1", "answer2", "answer3", "answer4"],
+  {question: "Inside which HTML element do we put the JavaScript?",
+  answers: ["<scripting>", "<javascript>", "<script>", "<js>"],
+  correct: 2,
+  },
+  {question: "How do you write an IF statement in JavaScript?",
+  answers: ["if i == 5 then", "if i could only", "if (i == 5) {}", "var i = 5"],
+  correct: 2,
+  },
+  {question: "How do you add line comments in JavaScript",
+  answers: ["//comment", "<!--comment-->", "'comment'", "<s>comment</s>"],
   correct: 0,
   },
-  {question: "question content goes here",
-  answers: ["answer1", "answer2", "answer3", "answer4"],
-  correct: 0,
-  },
-  {question: "question content goes here",
-  answers: ["answer1", "answer2", "answer3", "answer4"],
-  correct: 0,
-  },
-  {question: "question content goes here",
-  answers: ["answer1", "answer2", "answer3", "answer4"],
-  correct: 0,
+  {question: "How do you add a button using HTML",
+  answers: ["<b>", "<button>", "!button", "isButton = true"],
+  correct: 1,
   },
 ]
 
-//stage .css display attributes
-quiz.setAttribute("style", "display:none");
-submission.setAttribute("style", "display:none");
-scoreboard.setAttribute("style", "display:none");
-
-//timer, with gameover functionality
+//timer
 function runTimer() {
     var timerInterval = setInterval (function() {
         seconds--;
         timer.textContent = seconds;
-        if(seconds === 0) {
-          console.log('Time out!');
-          score = 0;
+        if (seconds < 10) {
+          feedback.textContent = "Hurry up, ten seconds on the clock!";
+        } 
+        if ((seconds === 0) || (win === true)) {
           clearInterval(timerInterval);
-          quiz.setAttribute("style", "display:none");
-          submission.setAttribute("style", "display:block");
+          endQuiz();
         };
     }, 1000);
 };
 
-//determines quiz progress and ends quiz with final question
+//determines quiz progress and end point
 function runQuiz() {
   if (current === 0) {
     console.log("Begin quiz with " + seconds + " seconds left.");
@@ -74,8 +69,7 @@ function runQuiz() {
     runTimer();
     drawQuiz();
   } else if (current === pool.length) {
-    console.log("You won! Your score is " + seconds + ".");
-    score = seconds;
+    win = true;
     quiz.setAttribute("style", "display:none");
     submission.setAttribute("style", "display:block");
   } else {
@@ -85,7 +79,7 @@ function runQuiz() {
 
 //draws the current question and answers from question pool
 function drawQuiz() {
-  console.log("Cycling question, current place is " + current + " out of " + pool.length + ".")
+  console.log("Cycling question, current place is " + current + " out of " + pool.length + " question(s).")
   var currentQ = pool[current].question;
   var currentA = pool[current].answers;
   title.textContent = currentQ;
@@ -95,20 +89,37 @@ function drawQuiz() {
   button3.textContent = currentA[3];
 };
 
-//decriment time for incorrect answer choice
+//decriment time for incorrect answer choice, cycle question
 function gradeQuiz() {
   var choice = this.getAttribute("id");
   console.log("User selected " + choice +", checking answer.");
   correct = pool[current].correct;
   if (choice == correct) {
-    console.log("Answer correct, cycling question");
+    console.log("Answer correct, cycling question.");
+    feedback.textContent = "Correct!"
     current++;
   } else {
-    console.log("Answer incorrect, deducting 10 seconds, cycling question.");
+    console.log("Answer incorrect, decrimenting 10 seconds, cycling question.");
+    feedback.textContent = "Incorrect, decrementing 10 seconds."
     seconds -= 10;
     current++;
   };
   runQuiz();
+};
+
+function endQuiz() {
+  if (win === false) {
+    console.log("Game over!");
+    score = 0;
+    quiz.setAttribute("style", "display:none");
+    submission.setAttribute("style", "display:block");
+  } else {
+    console.log("User won! The score is " + seconds + ".");
+    score = seconds;
+    quiz.setAttribute("style", "display:none");
+    submission.setAttribute("style", "display:block");
+    document.getElementById("score").textContent = score
+  };
 };
 
 //submit initals and score to local storage
@@ -117,40 +128,54 @@ function submitScore() {
     initial.setAttribute("placeholder", "Enter your initials");
   } else {
     username = initial.value.trim();
+    console.log("Submitting initials " + username + " and score " + score + " to the scoreboard.");
     var currentScore = {
       username : username,
       score : score
     };
-    history.push(currentScore);
-    localStorage.setItem("history", JSON.stringify(history));
-    console.log("Submitting initials " + username + " and score " + score + " to the scoreboard.");
+    localStorage.setItem("score", JSON.stringify(currentScore));
     submission.setAttribute("style", "display:none");
     scoreboard.setAttribute("style", "display:block");
   };
 };
 
-//draw scoreboard from local storage
+//draw scoreboard from local storage 
 function drawScore() {
-  board.appendChild(history);
+
 };
 
-//reset quiz
-function reset() {
-  initial.setAttribute("placeholder", "");
-  scoreboard.setAttribute("style", "display:none");
+
+function clearScore() {
+  localStorage.clear();
+};
+
+//reset quiz to initial state
+function stage() {
+  console.log("Staging.")
   opening.setAttribute("style", "display:block");
+  quiz.setAttribute("style", "display:none");
+  submission.setAttribute("style", "display:none");
+  scoreboard.setAttribute("style", "display:none");
+  feedback.textContent = ""
+  initial.setAttribute("placeholder", "");
   username = "";
   score = 0;
   current = 0;
-  seconds = 80;
+  seconds = 60;
+  win = false;
+  timer.textContent = 60;
 };
 
-//navigate quiz
+//navigate
 start.addEventListener("click", runQuiz);
 button0.addEventListener("click", gradeQuiz);
 button1.addEventListener("click", gradeQuiz);
 button2.addEventListener("click", gradeQuiz);
 button3.addEventListener("click", gradeQuiz);
-submit.addEventListener("click", submitScore, drawScore);
-clear.addEventListener("click", localStorage.clear());
-back.addEventListener("click", reset);
+submit.addEventListener("click", submitScore);
+submit.addEventListener("click", drawScore);
+clear.addEventListener("click", clearScore);
+back.addEventListener("click", stage)
+
+//initialize
+stage();
