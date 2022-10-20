@@ -15,9 +15,12 @@ var scoreboard = document.getElementById('scoreboard');
 var board = document.getElementById('board');
 var back = document.getElementById('back');
 var clear = document.getElementById('clear');
+var highScore = String;
 var username = String;
 var score = Number;
+var scores = Array;
 var current = Number;
+var timerInterval = Number;
 var seconds = Number;
 var win = Boolean;
 
@@ -47,14 +50,13 @@ var pool = [
 
 //timer
 function runTimer() {
-    var timerInterval = setInterval (function() {
+  timerInterval = setInterval (function() {
         seconds--;
         timer.textContent = seconds;
         if (seconds < 10) {
           feedback.textContent = "Hurry up, ten seconds on the clock!";
         } 
         if ((seconds === 0) || (win === true)) {
-          clearInterval(timerInterval);
           endQuiz();
         };
     }, 1000);
@@ -107,15 +109,18 @@ function gradeQuiz() {
   runQuiz();
 };
 
+//end game and log score
 function endQuiz() {
   if (win === false) {
     console.log("Game over!");
     score = 0;
+    clearInterval(timerInterval);
     quiz.setAttribute("style", "display:none");
     submission.setAttribute("style", "display:block");
   } else {
     console.log("User won! The score is " + seconds + ".");
     score = seconds;
+    clearInterval(timerInterval);
     quiz.setAttribute("style", "display:none");
     submission.setAttribute("style", "display:block");
     document.getElementById("score").textContent = score
@@ -128,23 +133,41 @@ function submitScore() {
     initial.setAttribute("placeholder", "Enter your initials");
   } else {
     username = initial.value.trim();
-    console.log("Submitting initials " + username + " and score " + score + " to the scoreboard.");
-    var currentScore = {
+    highScore = {
       username : username,
       score : score
     };
-    localStorage.setItem("score", JSON.stringify(currentScore));
+    scores = JSON.parse(localStorage.getItem("scores"));
+    scores.push(highScore);
+    localStorage.setItem("scores", JSON.stringify(scores));
     submission.setAttribute("style", "display:none");
     scoreboard.setAttribute("style", "display:block");
+    console.log("Submitting initials " + username + " and score " + score + " to the scoreboard.");
   };
 };
 
 //draw scoreboard from local storage 
 function drawScore() {
+  scores = JSON.parse(localStorage.getItem("scores"));
+  for (let i = scores.length - 1; i > scores.length-5; i--) {
+      if (scoreboard.childElementCount < scores.length) {
+        var li = document.createElement('li');
+        li.textContent = scores[i].username + " scored " + scores[i].score + " seconds";
+        scoreboard.appendChild(li);
+      };
+    };
+  };
 
-};
+//view highscores at any time
+function showScore() {
+  opening.setAttribute("style", "display:none");
+  quiz.setAttribute("style", "display:none");
+  submission.setAttribute("style", "display:none");
+  scoreboard.setAttribute("style", "display:block");
+  clearInterval(timerInterval);
+}
 
-
+//erase local memory
 function clearScore() {
   localStorage.clear();
 };
@@ -172,6 +195,7 @@ button0.addEventListener("click", gradeQuiz);
 button1.addEventListener("click", gradeQuiz);
 button2.addEventListener("click", gradeQuiz);
 button3.addEventListener("click", gradeQuiz);
+show.addEventListener("click", showScore)
 submit.addEventListener("click", submitScore);
 submit.addEventListener("click", drawScore);
 clear.addEventListener("click", clearScore);
