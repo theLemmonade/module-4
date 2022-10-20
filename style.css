@@ -70,6 +70,20 @@ button:hover {
     border-radius: 5px;
 }
 
+#board {
+    margin-bottom: 20px;
+}
+
+#board, .boardItem {
+    display: grid;
+    font-size: 20px;
+    padding: 5px 5px 10px 15px;
+    max-width: 500px;
+    margin-top: 10px;
+    background-color: rgb(15, 15, 15);
+
+}
+
 @-webkit-keyframes blink {
     0% {background: black}
     50% {background: lime}

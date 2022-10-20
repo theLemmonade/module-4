@@ -15,10 +15,9 @@ var scoreboard = document.getElementById('scoreboard');
 var board = document.getElementById('board');
 var back = document.getElementById('back');
 var clear = document.getElementById('clear');
-var highScore = String;
 var username = String;
 var score = Number;
-var scores = Array;
+var usernameScore = Array;
 var current = Number;
 var timerInterval = Number;
 var seconds = Number;
@@ -68,12 +67,16 @@ function runQuiz() {
     console.log("Begin quiz with " + seconds + " seconds left.");
     opening.setAttribute("style", "display:none");
     quiz.setAttribute("style", "display:block");
+    submission.setAttribute("style", "display:none");
+    scoreboard.setAttribute("style", "display:none");
     runTimer();
     drawQuiz();
   } else if (current === pool.length) {
     win = true;
+    opening.setAttribute("style", "display:none");
     quiz.setAttribute("style", "display:none");
     submission.setAttribute("style", "display:block");
+    scoreboard.setAttribute("style", "display:none");
   } else {
     drawQuiz();
   };
@@ -121,42 +124,59 @@ function endQuiz() {
     console.log("User won! The score is " + seconds + ".");
     score = seconds;
     clearInterval(timerInterval);
+    opening.setAttribute("style", "display:none");
     quiz.setAttribute("style", "display:none");
     submission.setAttribute("style", "display:block");
+    scoreboard.setAttribute("style", "display:none");
     document.getElementById("score").textContent = score
   };
 };
 
-//submit initals and score to local storage
+//append score to object in local storage
 function submitScore() {
   if (initial.value === "") {
     initial.setAttribute("placeholder", "Enter your initials");
   } else {
     username = initial.value.trim();
-    highScore = {
+    usernameScore = {
       username : username,
       score : score
     };
-    scores = JSON.parse(localStorage.getItem("scores"));
-    scores.push(highScore);
-    localStorage.setItem("scores", JSON.stringify(scores));
+    var existing = localStorage.getItem('scores');
+    existing = existing ? JSON.parse(existing) : {};
+    existing[username] = score;
+    localStorage.setItem('scores', JSON.stringify(existing));
+    console.log("Submitting initials " + username + " and score " + score + " to the scoreboard.");
+    opening.setAttribute("style", "display:none");
+    quiz.setAttribute("style", "display:none");
     submission.setAttribute("style", "display:none");
     scoreboard.setAttribute("style", "display:block");
-    console.log("Submitting initials " + username + " and score " + score + " to the scoreboard.");
+    drawScore();
   };
 };
 
-//draw scoreboard from local storage 
+//pull scoreboard from local storage, sort by seconds remaining descending, append to .html
 function drawScore() {
-  scores = JSON.parse(localStorage.getItem("scores"));
-  for (let i = scores.length - 1; i > scores.length-5; i--) {
-      if (scoreboard.childElementCount < scores.length) {
-        var li = document.createElement('li');
-        li.textContent = scores[i].username + " scored " + scores[i].score + " seconds";
-        scoreboard.appendChild(li);
-      };
+  var scores = JSON.parse(localStorage.getItem("scores"));
+  if (scores !== null) {
+    var entries = Object.entries(scores);
+    var scoresSorted = entries.sort((b, a) => a[1] - b[1]);
+    console.log("Current scoreboard:");
+    console.log(scoresSorted);
+    board.textContent = ""
+    var toAdd = document.createDocumentFragment();
+    for(var i = 0; i < scoresSorted.length; i++){
+      var newDiv = document.createElement('div')
+      newDiv.className = 'boardItem';
+      newDiv.textContent = scoresSorted[i][0] + " scored " + scoresSorted[i][1];
+      toAdd.appendChild(newDiv);
     };
+    board.appendChild(toAdd);
+  } else {
+    board.textContent = "Scoreboard empty, get quizzing!";
+    return;
   };
+};
 
 //view highscores at any time
 function showScore() {
@@ -170,6 +190,7 @@ function showScore() {
 //erase local memory
 function clearScore() {
   localStorage.clear();
+  drawScore();
 };
 
 //reset quiz to initial state
@@ -203,3 +224,6 @@ back.addEventListener("click", stage)
 
 //initialize
 stage();
+drawScore();
+
+//this challenge was incredibly difficult, and took me a long long time to complete, but I learned alot and I'm very proud of it!
