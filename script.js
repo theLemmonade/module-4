@@ -118,18 +118,16 @@ function endQuiz() {
     console.log("Game over!");
     score = 0;
     clearInterval(timerInterval);
-    quiz.setAttribute("style", "display:none");
-    submission.setAttribute("style", "display:block");
   } else {
     console.log("User won! The score is " + seconds + ".");
     score = seconds;
     clearInterval(timerInterval);
-    opening.setAttribute("style", "display:none");
-    quiz.setAttribute("style", "display:none");
-    submission.setAttribute("style", "display:block");
-    scoreboard.setAttribute("style", "display:none");
-    document.getElementById("score").textContent = score
   };
+  document.getElementById("score").textContent = score
+  opening.setAttribute("style", "display:none");
+  quiz.setAttribute("style", "display:none");
+  submission.setAttribute("style", "display:block");
+  scoreboard.setAttribute("style", "display:none");
 };
 
 //append score to object in local storage
