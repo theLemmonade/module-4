@@ -15,6 +15,8 @@ https://thelemmonade.github.io/module-4/
 The Author is Chris Lemmon.
 
 ## Version History
+* 1.0
+  * Project complete! Ready for release.
 * 0.7
    * Scoreboard nearing functionality, bugged
 * 0.6
@@ -22,7 +24,7 @@ The Author is Chris Lemmon.
 * 0.5
    * Timer bugged, scoreboard work underway
 * 0.4
-   * quiz debugged, timer bugged
+   * Quiz debugged, timer bugged
 * 0.3
    * .js work, navigation possible
 * 0.2
