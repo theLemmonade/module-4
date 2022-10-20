@@ -36,6 +36,6 @@ The Author is Chris Lemmon.
 
 ## Acknowledgments
 
-This code was built extensively referecing code snippets from W3Schools, CodeHim.com, and MDN Webdocs.
+This code was built referecing code snippets from W3Schools and MDN Webdocs.
 
 reset.css courtesy of meyerweb.com
